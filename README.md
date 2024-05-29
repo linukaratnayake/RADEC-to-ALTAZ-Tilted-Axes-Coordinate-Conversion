@@ -1,2 +1,5 @@
-# ALT-AZ-Coordinates-for-Stellar-Objects-when-Axes-are-Tilted-or-Rotated
-ALT-AZ coordinates for stellar objects when axes are tilted or rotated.
+# ALT-AZ Coordinates for Stellar Objects when Axes are Tilted or Rotated
+
+When observing stellar objects like stars, and planets, Altitude - Azimuth (ALT-AZ) Coordinate System is often used. One of the main charasteristics of this coordinate system is that it is a spherical coordinate system with two values: altitude, and azimuth. The azimuth is given as the horizontal angle rotated clockwise from North on a horizontal plane, and the altitude is the angle to be looked upward or downword for the stellar object, from that horizontal plane.
+
+This modification to the existing coordinate system allows it to use tilted or rotated axes from the horizontal plane. The main benefit is that now it is possible to use telescopes without previously leveling horizontally or aligning with North - South line.
