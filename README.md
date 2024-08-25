@@ -2,7 +2,7 @@
 
 In astronomy, celestial coordinates such as Right Ascension (RA) and Declination (DEC) are vital for locating objects in the sky. However, for practical observation from a specific location on Earth, these coordinates must be transformed into Altitude (ALT) and Azimuth (AZ), which are relative to the observer's position.
 
-## Converting Right Ascension and Declination to Altitude and Azimuth
+## Part I - Converting Right Ascension and Declination to Altitude and Azimuth
 
 This section describes the algorithm to convert RA and DEC into ALT and AZ, incorporating essential concepts like Julian Date, Julian Time, and Greenwich Mean Sidereal Time (GMST).
 
@@ -79,3 +79,94 @@ The algorithm outputs the Altitude ($A$) and Azimuth ($Az$) coordinates, which c
 When implementing this algorithm, special care must be taken in handling time units and angles. Conversion between degrees and radians is necessary for trigonometric functions, and time-related calculations must account for different time zones and the distinction between UT and sidereal time.
 
 This algorithm is essential for astronomers and hobbyists, enabling precise positioning of telescopes and other observational equipment to study celestial objects from any location on Earth.
+
+## Part II - Coordinate Transformation Algorithm for Altitude-Azimuth Systems
+
+This algorithm compensates for the tilts and rotations of the coordinate axes when using the Altitude (ALT) and Azimuth (AZ) coordinates in a celestial tracking system. The process is outlined as follows:
+
+### 1. Initial Setup
+1. **Getting Inputs**
+   - RA and DEC values of a celestial object are converted to ALT and AZ values using the previos algorithm. These are the coordinates that need to be converted to new ALT-AZ system compensating for tilts and rotations of the axes.
+
+   - Distance to the celestial object, denoted by $r$, is assumed to be on the inner surface of a sphere.
+
+2. **Conversion to Radians:**
+   - The AZ (Azimuth) and ALT (Altitude) values are converted from degrees to radians.
+
+### 2. Algorithm Overview
+
+1. **Coordinate System Correction:**
+   - Adjustments are made to the azimuth ($\theta$) and altitude ($\phi$) to align with the specific Cartesian coordinate system being used:
+   
+     $$\theta = 2\pi - \text{az}$$
+     
+     $$\phi = \frac{\pi}{2} - \text{alt}$$
+     
+     $$\rho = r$$
+
+2. **Cartesian Coordinates Conversion:**
+   - The ALT-AZ coordinates are converted into Cartesian coordinates for easier manipulation:
+     
+     $$x = \rho \cdot \sin(\phi) \cdot \cos(\theta)$$
+     
+     $$y = \rho \cdot \sin(\phi) \cdot \sin(\theta)$$
+     
+     $$z = \rho \cdot \cos(\phi)$$
+     
+   - These are represented as a column vector $X$:
+     
+     $$X = [ x , y , z ]^T$$
+
+3. **Tilt and Rotation Compensation:**
+   - Define the tilt and rotation angles ($\alpha$, $\beta$, $\gamma$) in radians, which represent the tilt and rotation around the x, y, and z axes, respectively.
+
+   - Calculate the coefficients of the new coordinate system, which are used to define the transformation matrix $A$:
+
+     $$x' = [ \cos(\alpha) , -\sin(\alpha) , \sin(\beta) ]^T$$
+     
+     $$y' = [ \sin(\alpha) , \cos(\alpha) , \sin(\gamma) ]^T$$
+     
+     $$z' = [ p , q , r ]^T$$
+
+     where:
+     
+     $$r = \frac{1}{\sqrt{(\sin^2(\gamma) \cdot \sin^2(\alpha)) + (\sin^2(\beta) \cdot \cos^2(\alpha)) + (\sin^2(\alpha) \cdot \sin^2(\beta)) + (\sin^2(\gamma) \cdot \cos^2(\alpha)) + 1}}$$
+  
+     
+     $$p = r \cdot (\sin(\gamma) \cdot \sin(\alpha) - \sin(\beta) \cdot \cos(\alpha))$$
+     
+     
+     $$q = r \cdot (\sin(\alpha) \cdot \sin(\beta) + \sin(\gamma) \cdot \cos(\alpha))$$
+
+4. **Transformation Matrix Application:**
+   - Construct the transformation matrix $A$ using the new basis vectors:
+     
+     $$A = [ x', y', z' ]^T$$
+
+   - Apply the transformation matrix to the original Cartesian coordinates $X$ to obtain the new coordinates:
+     
+     $$X_{\text{new}} = A^{-1}X$$
+     
+   - Extract the new coordinates $x'\_{\text{new}}$, $y'\_{\text{new}}$, and $z'\_{\text{new}}$.
+
+5. **Conversion Back to ALT-AZ:**
+   - Convert the transformed Cartesian coordinates back into ALT-AZ:
+     
+     $$\theta' = \arctan2(y'\_{\text{new}}, x'\_{\text{new}})$$
+     
+     $$\phi' = \arctan2(x'\_{\text{new}}, z'\_{\text{new}} \cdot \cos(\theta'))$$
+
+   - Adjust for correct ranges to get the final azimuth and altitude:
+
+     $$\text{if } \theta' < 0 \text{, then } \theta' = \theta' + 2\pi$$
+     
+     $$\text{if } \phi' < 0 \text{, then } \phi' = \phi' + \pi$$
+     
+     $$\text{azimuth} = 2\pi - \theta'$$
+     
+     $$\text{altitude} = \frac{\pi}{2} - \phi'$$
+
+### 3. Implementation Considerations
+
+This algorithm is essential for accurately compensating for physical misalignments in telescope mounts, ensuring that the celestial object is correctly tracked in the sky.
+
