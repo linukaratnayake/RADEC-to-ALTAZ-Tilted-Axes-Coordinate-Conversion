@@ -97,6 +97,8 @@ For more details, refer <a href="Part II - ALTAZ Coordinates for Tilted Axes/Con
 
 ### 2. Algorithm Overview
 
+![Axes_1](https://github.com/user-attachments/assets/d02729aa-f318-4ebf-9731-48cff884f7d3)
+
 1. **Coordinate System Correction:**
    - Adjustments are made to the azimuth ($\theta$) and altitude ($\phi$) to align with the specific Cartesian coordinate system being used:
    
@@ -118,6 +120,8 @@ For more details, refer <a href="Part II - ALTAZ Coordinates for Tilted Axes/Con
    - These are represented as a column vector $X$:
      
      $$X = [ x , y , z ]^T$$
+
+![Axes_2](https://github.com/user-attachments/assets/43848c74-ca98-4376-bceb-a19a332817b7)
 
 3. **Tilt and Rotation Compensation:**
    - Define the tilt and rotation angles ($\alpha$, $\beta$, $\gamma$) in radians, which represent the tilt and rotation around the x, y, and z axes, respectively.
@@ -168,7 +172,11 @@ For more details, refer <a href="Part II - ALTAZ Coordinates for Tilted Axes/Con
      
      $$\text{altitude} = \frac{\pi}{2} - \phi'$$
 
+![Axes_3](https://github.com/user-attachments/assets/a548e014-d9f7-4af3-94c6-29fb07ae844f)
+
 ### 3. Implementation Considerations
 
 This algorithm is essential for accurately compensating for physical misalignments in telescope mounts, ensuring that the celestial object is correctly tracked in the sky.
+
+The directions for the angles $\alpha$, $\beta$, and $\gamma$ should be taken carefully.
 
