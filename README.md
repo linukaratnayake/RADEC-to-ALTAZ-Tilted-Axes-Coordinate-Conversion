@@ -82,7 +82,9 @@ This algorithm is essential for astronomers and hobbyists, enabling precise posi
 
 ## Part II - Coordinate Transformation Algorithm for Altitude-Azimuth Systems
 
-This algorithm compensates for the tilts and rotations of the coordinate axes when using the Altitude (ALT) and Azimuth (AZ) coordinates in a celestial tracking system. The process is outlined as follows:
+This algorithm compensates for the tilts and rotations of the coordinate axes when using the Altitude (ALT) and Azimuth (AZ) coordinates in a celestial tracking system. The process is outlined as follows.
+
+For more details, refer <a href="Part II - ALTAZ Coordinates for Tilted Axes/Concept.pdf">this</a> original hand-written document.
 
 ### 1. Initial Setup
 1. **Getting Inputs**
